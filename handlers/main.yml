@@ -1,0 +1,8 @@
+---
+# handlers file for ansible-role-metadata-restrict-access
+
+- name: Make sure Iptables is running
+  systemd:
+    name: iptables
+    state: started
+    enabled: yes

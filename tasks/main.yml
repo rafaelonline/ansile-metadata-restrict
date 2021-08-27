@@ -1,0 +1,22 @@
+---
+# tasks file for ansible-role-metadata-restrict-access
+
+- name: Install Iptables
+  yum:
+    name: iptables-services
+    state: latest
+  notify: Make sure Iptables is running
+
+- name: Firewall rule - prevents access except for processes running in the user account root
+  iptables:
+    action: append
+    chain: OUTPUT
+    protocol: tcp
+    destination: 169.254.169.254
+    uid_owner: "!0"
+    jump: REJECT
+    
+- name: Save Iptables rules
+  shell: service iptables save
+  args:
+    warn: no
